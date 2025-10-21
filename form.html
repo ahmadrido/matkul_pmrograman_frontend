@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+
+        
+                <label for="nama_depan">Nama Depan</label>
+                <input type="text" name="nama_depan" id="nama_depan"><br>
+                <label for="nama_belakang">Nama Belakang</label>
+                <input type="text" name="nama_belakang" id="nama_belakang"><br>
+                <label for="nilai">Nilai</label>
+                <input type="number" name="nilai" id="nilai"><br>
+                <button onclick="submmit()">Kirim</button>
+
+            <script>
+                function submmit() {
+                    var nama_depan = document.getElementById("nama_depan").value;
+                    var nama_belakang = document.getElementById("nama_belakang").value;
+                    var nilai = document.getElementById("nilai").value;
+                    var predikat;
+                    if (nilai >= 80) {
+                        predikat = "A";                        
+                    } else if (nilai >= 70) {
+                        predikat = "B";
+                    } else if (nilai >= 60) {
+                        predikat = "C";
+                    } else if (nilai >= 50) {
+                        predikat = "D";
+                    } else {
+                        predikat = "E";
+                    }
+                    console.log("Nama Depan : " + nama_depan + "\nNama Belakang : " + nama_belakang + "\nNama Lengkap : " + nama_depan + " " + nama_belakang + "\nNilai : " + nilai + "\nPredikat : " + predikat);
+                }
+        </script>
+</body>
+</html>
