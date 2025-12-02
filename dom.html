@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dom Manipulation</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #31364d 0%, #2e1f3d 100%);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        #container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header-title {
+            text-align: center;
+            color: white;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header-subtitle {
+            text-align: center;
+            color: rgba(255,255,255,0.9);
+            font-size: 1.1rem;
+            margin-bottom: 40px;
+            line-height: 1.6;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            padding: 20px 0;
+        }
+
+        .phone-card {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .phone-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.2);
+        }
+
+        .phone-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+        }
+
+        .phone-card img {
+            width: 180px;
+            height: 220px;
+            object-fit: contain;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.1));
+            transition: transform 0.3s ease;
+        }
+
+        .phone-card:hover img {
+            transform: scale(1.05);
+        }
+
+        .phone-name {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #333;
+            margin: 15px 0;
+        }
+
+        .price-container {
+            margin: 15px 0;
+        }
+
+        .original-price {
+            font-size: 1rem;
+            color: #999;
+            text-decoration: line-through;
+            margin: 0;
+        }
+
+        .current-price {
+            font-size: 1.1rem;
+            color: #333;
+            font-weight: 600;
+            margin: 5px 0;
+        }
+
+        .final-price {
+            font-size: 1.3rem;
+            color: #e74c3c;
+            font-weight: 700;
+            margin: 10px 0;
+        }
+
+        .discount-badge {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            display: inline-block;
+            margin: 10px 0;
+            box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
+        }
+
+        .os-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            border-radius: 25px;
+            font-weight: 600;
+            margin-top: 15px;
+            font-size: 1rem;
+        }
+
+        .os-apple {
+            background: linear-gradient(135deg, #000000, #434343);
+            color: white;
+        }
+
+        .os-android {
+            background: linear-gradient(135deg, #a4c639, #7fb842);
+            color: white;
+        }
+
+        .price-format {
+            font-family: 'Courier New', monospace;
+        }
+    </style>
+</head>
+<body>
+    <div id="container"></div>
+    <!-- <script src="dom.js"></script> -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"></script>
+
+
+    <script type="text/babel">
+        const root = ReactDOM.createRoot(document.getElementById('container'));
+        // const button = <button className="btn">Click Me</button>;
+        // const div = <div className="wrapper">{button}</div>;
+        // root.render(div);
+
+        const phoneData = [
+        { name: "iPhone X", price: 10000000, discount: 50, os: "apple", img: "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-x-select-2017?wid=940&hei=1112&fmt=png-alpha&.v=1550795416540" },
+        { name: "Oppo Find X", price: 14000000, discount: 30 , os: "android", img: "https://assorted.downloads.oppo.com/static/assets/images/products/findx/1920/sec-5-phone-3b5ba3fa48e3cee70d35806a04f2e3cdf5e4e0e8.jpg" },
+        { name: "Redmi Note X", price: 5000000, discount: 42, os: "android", img: "https://comprasmartphone.com/_next/image?url=https%3A%2F%2Fstorage.comprasmartphone.com%2Fsmartphones%2Fxiaomi-redmi-note-14-pro.png&w=640&q=75" },
+        { name: "Vivo y39", price: 10000000, discount: 0, os: "android", img: "https://asia-exstatic-vivofs.vivo.com/PSee2l50xoirPK7y/1740382057594/f35d1876f9e07b4c46535e764cb1a8d5.png" },
+        { name: "Iphone 12", price: 12000000, discount: 15, os: "apple", img: "https://pngimg.com/uploads/iphone_12/iphone_12_PNG11.png" },
+        { name: "Asus ROG Phone", price: 20000000, discount: 20, os: "android", img: "https://www.notebookcheck.net/fileadmin/_processed_/5/3/csm_asus_rog_phone_6_c538878ca1.png" }
+        ];
+
+        const finalPrice = (price, discount) => {
+            return price - (price * discount / 100);
+        }
+
+        const formatPrice = (price) => {
+            return new Intl.NumberFormat('id-ID').format(price);
+        }
+
+        function Phone(props) {
+            const discountedPrice = finalPrice(props.price, props.discount);
+            const hasDiscount = props.discount > 0;
+
+            return (
+                <div className="phone-card">
+                    <img src={props.img} alt={props.name} />
+                    <h2 className="phone-name">{props.name}</h2>
+                    
+                    <div className="price-container">
+                        {hasDiscount ? (
+                            <>
+                                <p className="original-price price-format">Rp {formatPrice(props.price)}</p>
+                                <p className="final-price price-format">Rp {formatPrice(discountedPrice)}</p>
+                                <div className="discount-badge">
+                                    🏷️ {props.discount}% OFF
+                                </div>
+                            </>
+                        ) : (
+                            <p className="current-price price-format">Rp {formatPrice(props.price)}</p>
+                        )}
+                    </div>
+
+                    <div className={`os-badge ${props.os === "apple" ? "os-apple" : "os-android"}`}>
+                        <i className={`fa-brands ${props.os === "apple" ? "fa-apple" : "fa-android"}`}></i>
+                        {props.os === "apple" ? "Apple iOS" : "Android"}
+                    </div>
+                </div>
+            );
+        }
+
+        function Header() {
+            return <h1 className="header-title">🛍️ Ahmad's Phone Store</h1>
+        }
+
+        function Content() {
+            return <p className="header-subtitle">Discover the latest smartphones with amazing deals and discounts!</p>
+        }
+
+        function App(){
+            return (
+                <div>
+                    <Header />
+                    <Content />
+                    <div className="products-grid">
+                        {phoneData.map(phone => <Phone key={phone.name} {...phone} />)}
+                    </div>
+                </div>
+            )
+        }
+
+        root.render(<App />);
+    </script>
+
+    <!-- <script type="text/javascript">
+        const main = document.getElementById('container');
+        const root = React.createRoot(main);
+
+        const button = React.createElement('button', { className: 'btn' }, 'Click Me');
+        const div = React.createElement('div', { className: 'wrapper' }, button);
+
+        root.render(div);
+    </script> -->
+</body>
+</html>
